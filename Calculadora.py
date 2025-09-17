@@ -97,9 +97,7 @@ while True:
 
     # Extrae números y operadores de la entrada del usuario
     operacion= re.findall(r'[\d.]+|[-+*/^%r=()]|//|c|salir', operacion)
+    
     print(operacion)
     if salir(operacion):
         break
-    
-
-
