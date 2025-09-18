@@ -1,3 +1,12 @@
+## Calculadora INICIAL
+## Autor: Antonio Gómez Osorio
+## Github: agomoso-dev
+## Fecha: 2025-09-15
+## Descripción: Calculadora básica con funciones para cada operación
+## Versión: 2.0
+import re
+import readline  
+import os
 class Calculadora:
     def __init__(self):
         self.resultado = 0
@@ -44,14 +53,16 @@ class Calculadora:
         ^  : Potencia
         %  : Módulo
         r  : Redondear
+        () : Parentesis
         C  : Limpiar pantalla
-        =  : Mostrar resultado
-        salir: Salir
+        ayuda: /ayuda
+        salir: /salir
         ------------
         """
         print(opciones)
     
     def identificar_operacion(self, operacion, num1, num2):
+        # Mapea las operaciones a sus funciones 
         operadores = {
             '+': self.suma,
             '-': self.resta,
@@ -67,72 +78,131 @@ class Calculadora:
             if operacion == 'r':
                 return operadores[operacion](num1)
             return operadores[operacion](num1, num2)
-        elif operacion.lower() == 'c':
-            print("\n" * 100)
-            return self.resultado
         else:
             raise ValueError("Operación no reconocida")
-
-    def ejecutar(self):
-        import re
         
-        print("Bienvenido a la calculadora")
+    def comprobar_prioridad(self, tokens):
+        # Verificar operaciones prioritarias
+        tiene_mult = 'x' in tokens
+        tiene_div_entera = '//' in tokens
+        tiene_div_real = '/' in tokens
+        
+        idx_mult = 0
+        idx_div_entera = 0
+        idx_div_real = 0
+        
+        # print(f"Tiene multiplicación: {tiene_mult}, División entera: {tiene_div_entera}, División real: {tiene_div_real}")
+        
+        if tiene_mult or tiene_div_entera or tiene_div_real:
+            # print("div/multi detectada")
+            if tiene_mult:
+                idx_mult = tokens.index('x')
+            if tiene_div_entera:
+                idx_div_entera = tokens.index('//')
+            if tiene_div_real:
+                idx_div_real = tokens.index('/')
+                
+            # Encontrar el operador con menor índice (primera operación)
+            indices = []
+            if tiene_mult:
+                indices.append(('mult', idx_mult))
+            if tiene_div_entera:
+                indices.append(('div_entera', idx_div_entera))
+            if tiene_div_real:
+                indices.append(('div_real', idx_div_real))
+
+            if indices:
+                primera_op = min(indices, key=lambda x: x[1])
+                
+                if primera_op[0] == 'mult':
+                    # print("Multiplicación primero")
+                    resultado = float(tokens[idx_mult - 1])
+                elif primera_op[0] == 'div_entera':
+                    # print("División entera primero")
+                    resultado = float(tokens[idx_div_entera - 1])
+                else:
+                    print("División real primero")
+                    resultado = float(tokens[idx_div_real - 1])
+            else:
+                resultado = float(tokens[0])
+        else:
+            resultado = float(tokens[0])
+            
+        return resultado
+    
+    def procesar_expresion(self, tokens):
+        i = 1
+        while i < len(tokens)-1:
+            # Busca operadores de multiplicación y división
+            if tokens[i] in ['x', '/', '//']:
+                # Convierte los operandos a números
+                num1 = float(tokens[i-1])
+                operador = tokens[i]
+                num2 = float(tokens[i+1])
+                # Realiza la operación y reemplaza los 3 tokens con el resultado
+                resultado = self.identificar_operacion(operador, num1, num2)
+                tokens[i-1:i+2] = [str(resultado)]
+                # Vuelve al inicio para buscar más operaciones
+                i = 1
+            else:
+                i += 2
+
+        # Después procesamos sumas y restas 
+        resultado = float(tokens[0])
+        for i in range(1, len(tokens)-1, 2):
+            operador = tokens[i]
+            num2 = float(tokens[i+1])
+            resultado = self.identificar_operacion(operador, resultado, num2)
+        return resultado
+    
+    def ejecutar(self):
+
+        print("Bienvenido a la calculadora \n /// by Antonio /// \n /help para ayuda ")
         self.mostrar_opciones()
         
         while True:
             try:
-                print("Cálculo:")
-                entrada = input(":").lower()
+                print("\n--Cálculo--")
+                readline.set_startup_hook(lambda: readline.insert_text(str(self.resultado)))
+                entrada = input("- ").lower()
+                readline.set_startup_hook() 
                 
-                if entrada == "salir":
+                if entrada == "/salir":
                     print("Gracias por usar la calculadora")
                     break
+                elif entrada == "c":
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print("\n /ayuda (muestra opciones) \n")
+                    self.resultado = 0
+                    continue
+                elif entrada == "/ayuda":
+                    self.mostrar_opciones()
+                    continue
                     
-                # Extrae números y operadores
+                # Extrae números, operadores, paréntesis y comandos
                 tokens = re.findall(r'[\d.]+|//|[-+/^%r=()]|x|c|salir', entrada)
-                print(f"Tokens encontrados: {tokens}")
-
-
-                        
-                if len(tokens) >= 3:
-                    # Verificar operaciones prioritarias
-                    tiene_mult = 'x' in tokens
-                    tiene_div = '//' in tokens
-                    
-                    idx_mult = 0
-                    idx_div = 0
-
-                    
-                    print(f"Tiene multiplicación: {tiene_mult}, Tiene división entera: {tiene_div}")
-                    if tiene_mult or tiene_div:
-                        print("Multiplicación o división entera detectada")
-                        print("Comienza el cálculo con multiplicación o división")
-                        if tiene_mult:
-                            idx_mult = tokens.index('x')
-                        if tiene_div:
-                            idx_div = tokens.index('//')
-                        if idx_mult > idx_div:
-                            print("División entera primero")
-                            resultado = float(tokens[idx_div - 1])
-                        elif idx_div > idx_mult:
-                            print("Multiplicación primero")
-                            resultado = float(tokens[idx_mult - 1])
-                        else:
-                            resultado = float(tokens[0])
-                    # Inicializamos con el primer número
-                    resultado = float(tokens[0])
-                    
-                    # Procesamos los operadores y números en pares
-                    for i in range(1, len(tokens)-1, 2):
-                        operador = tokens[i]
-                        try:
-                            num2 = float(tokens[i+1])
-                            resultado = self.identificar_operacion(operador, resultado, num2)
-                        except ValueError as e:
-                            print(f"Error en la operación: {e}")
-                            break
                 
-                    self.resultado = resultado
+                # Comprobación de paréntesis
+                if tokens.count('(') != tokens.count(')'):
+                    raise ValueError("Paréntesis no balanceados")
+                    
+                # Procesa paréntesis de adentro hacia afuera
+                while '(' in tokens:
+                    # Encuentra el paréntesis más interno
+                    ultimo_abre = len(tokens) - 1 - tokens[::-1].index('(')
+                    # print(f"Encuentro el parentesis en la posicion {ultimo_abre}")
+                    siguiente_cierra = tokens[ultimo_abre:].index(')') + ultimo_abre
+                    # print(f"Encuentro el cierre en la posicion {siguiente_cierra}")
+                    # Extrae y procesa la expresión dentro de los paréntesis
+                    expresion_interna = tokens[ultimo_abre + 1:siguiente_cierra]
+                    resultado_parentesis = self.procesar_expresion(expresion_interna)
+                    # print(f"Resultado del parenteis: {resultado_parentesis}")
+                    # Reemplaza la expresión entre paréntesis con su resultado
+                    tokens[ultimo_abre:siguiente_cierra + 1] = [str(resultado_parentesis)]
+                
+                # Procesa la expresión resultante
+                if len(tokens) >= 1:
+                    self.resultado = self.procesar_expresion(tokens)
                     print(f"Resultado: {self.resultado}")
                     
             except (ValueError, IndexError) as e:
