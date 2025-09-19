@@ -54,9 +54,9 @@ class Calculadora:
         %  : Módulo
         r  : Redondear
         () : Parentesis
-        C  : Limpiar pantalla
-        ayuda: /ayuda
-        salir: /salir
+        /C  : Limpiar pantalla
+        /ayuda: Mostrar opciones
+        /salir: Salir
         ------------
         """
         print(opciones)
@@ -176,7 +176,7 @@ class Calculadora:
                 if entrada == "/salir":
                     print("Gracias por usar la calculadora")
                     break
-                elif entrada == "c":
+                elif entrada == "/c":
                     os.system('cls' if os.name == 'nt' else 'clear')
                     print("\n /ayuda (muestra opciones) \n")
                     self.resultado = 0
