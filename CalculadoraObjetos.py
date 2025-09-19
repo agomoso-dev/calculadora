@@ -1,9 +1,9 @@
-## Calculadora INICIAL
+## Calculadora AVANZADA
 ## Autor: Antonio Gómez Osorio
 ## Github: agomoso-dev
-## Fecha: 2025-09-15
-## Descripción: Calculadora básica con funciones para cada operación
-## Versión: 2.0
+## Fecha: 2025-09-18
+## Descripción: Calculadora avanzada usando programación orientada a objetos
+## Versión: 1.0
 import re
 import readline  
 import os
@@ -133,27 +133,33 @@ class Calculadora:
     def procesar_expresion(self, tokens):
         i = 1
         while i < len(tokens)-1:
-            # Busca operadores de multiplicación y división
-            if tokens[i] in ['x', '/', '//']:
-                # Convierte los operandos a números
-                num1 = float(tokens[i-1])
-                operador = tokens[i]
-                num2 = float(tokens[i+1])
-                # Realiza la operación y reemplaza los 3 tokens con el resultado
-                resultado = self.identificar_operacion(operador, num1, num2)
-                tokens[i-1:i+2] = [str(resultado)]
-                # Vuelve al inicio para buscar más operaciones
-                i = 1
+            # Verificamos si es un operador válido
+            if tokens[i] in ['x', '/', '//', '+', '-', '^', '%', 'r']:
+                try:
+                    # Convierte los operandos a números
+                    num1 = float(tokens[i-1])
+                    operador = tokens[i]
+                    num2 = float(tokens[i+1])
+                    # Realiza la operación y reemplaza los 3 tokens con el resultado
+                    resultado = self.identificar_operacion(operador, num1, num2)
+                    tokens[i-1:i+2] = [str(resultado)]
+                    # Vuelve al inicio para buscar más operaciones
+                    i = 1
+                except ValueError:
+                    raise ValueError(f"No se puede convertir '{tokens[i-1]}' o '{tokens[i+1]}' a número")
+                except IndexError:
+                    raise ValueError("Expresión incompleta o mal formada")
             else:
                 i += 2
 
-        # Después procesamos sumas y restas 
-        resultado = float(tokens[0])
-        for i in range(1, len(tokens)-1, 2):
-            operador = tokens[i]
-            num2 = float(tokens[i+1])
-            resultado = self.identificar_operacion(operador, resultado, num2)
-        return resultado
+        # Validar que quede un número válido
+        try:
+            if len(tokens) == 1:
+                return float(tokens[0])
+            else:
+                raise ValueError("Expresión mal formada")
+        except ValueError:
+            raise ValueError(f"No se puede procesar '{tokens[0]}'")
     
     def ejecutar(self):
 
@@ -178,9 +184,11 @@ class Calculadora:
                 elif entrada == "/ayuda":
                     self.mostrar_opciones()
                     continue
+                elif not entrada: 
+                    continue
                     
                 # Extrae números, operadores, paréntesis y comandos
-                tokens = re.findall(r'[\d.]+|//|[-+/^%r=()]|x|c|salir', entrada)
+                tokens = re.findall(r'[\d.]+|//|[-+/^%r=()]|x|c', entrada)
                 
                 # Comprobación de paréntesis
                 if tokens.count('(') != tokens.count(')'):
