@@ -1,7 +1,56 @@
-## Sobre la Calculadora
+Calculadora - CLI & Web App
 
-Esta calculadora es un proyecto inicial diseñado para funcionar en la consola. Su objetivo principal es servir como herramienta básica para realizar operaciones matemáticas simples como suma, resta, multiplicación y división.  
+Este proyecto es una calculadora desarrollada en dos versiones:
 
-Actualmente, la calculadora **no cuenta con interfaz gráfica** y todas las interacciones se realizan mediante texto en la terminal. 
+-  Versión de consola (CLI) escrita en Python.
 
-En futuras versiones, se podrían agregar funcionalidades más avanzadas, como operaciones complejas, memoria de cálculos, historial de operaciones o incluso una interfaz gráfica más amigable para el usuario.
+-  Versión web con Django como backend y React como frontend.
+
+La idea principal es mostrar cómo una misma lógica puede adaptarse a diferentes entornos: desde la terminal hasta una aplicación web moderna.
+
+----------------------------------------------------------------------------------------------------------------
+Instalación y ejecución
+Clonar el repositorio:
+git clone https://github.com/tuusuario/calculadora.git
+cd calculadora/
+
+* Versión CLI (Python)
+Ejecutar:
+
+python CalculadoraCLI.py
+
+* Versión Web (Django + React)
+Backend (Django)
+
+Entrar al directorio del backend:
+
+cd Backend
+
+Crear entorno virtual e instalar dependencias:
+
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+pip install -r requirements.txt
+
+Ejecutar el servidor:
+
+python manage.py runserver
+
+Frontend (React)
+
+Entrar al directorio del frontend:
+
+cd Frontend
+
+
+Instalar dependencias:
+
+npm install
+
+Ejecutar:
+
+npm run dev
+----------------------------------------------------------------------------------------------------------------
+CAPTURA DE PANTALLA
+<img width="485" height="721" alt="image" src="https://github.com/user-attachments/assets/3f98a196-86b2-408e-a924-667319abe160" />
