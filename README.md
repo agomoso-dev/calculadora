@@ -51,6 +51,9 @@ npm install
 Ejecutar:
 
 npm run dev
+
 ----------------------------------------------------------------------------------------------------------------
-CAPTURA DE PANTALLA
+-----------------------
+- CAPTURA DE PANTALLA - 
+-----------------------
 <img width="485" height="721" alt="image" src="https://github.com/user-attachments/assets/3f98a196-86b2-408e-a924-667319abe160" />
