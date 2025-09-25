@@ -10,47 +10,60 @@ La idea principal es mostrar cómo una misma lógica puede adaptarse a diferente
 
 ----------------------------------------------------------------------------------------------------------------
 Instalación y ejecución
-Clonar el repositorio:
+```bash
+# Clonar repo
 git clone https://github.com/tuusuario/calculadora.git
 cd calculadora/
+```
 
 * Versión CLI (Python)
-Ejecutar:
 
+
+```bash
+# Ejecutar:
 python CalculadoraCLI.py
-
+```
 * Versión Web (Django + React)
 Backend (Django)
 
 Entrar al directorio del backend:
 
+```bash
+# Ejecutar:
 cd Backend
+```
 
 Crear entorno virtual e instalar dependencias:
 
+```bash
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
 pip install -r requirements.txt
+```
+
 
 Ejecutar el servidor:
-
+```bash
 python manage.py runserver
+```
 
 Frontend (React)
 
 Entrar al directorio del frontend:
-
+```bash
 cd Frontend
-
+```
 
 Instalar dependencias:
-
+```bash
 npm install
+```
 
 Ejecutar:
-
+```bash
 npm run dev
+```
 
 ----------------------------------------------------------------------------------------------------------------
 
