@@ -1,42 +1,77 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+body {
+    background-color: #1a1a1a;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.calculator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.calculator {
+    width: 400px;
+    background-color: #2a2d37;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.display {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: right;
+    font-size: 48px;
+    margin-bottom: 20px;
+    height: 80px;
+    line-height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.card {
-  padding: 2em;
+.buttons .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
 }
 
-.read-the-docs {
-  color: #888;
+.buttons button {
+    width: 85px;
+    height: 70px;
+    font-size: 28px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    background-color: #3b3e47;
+    color: #ffffff;
+}
+
+.buttons button:active {
+    transform: scale(0.95);
+}
+
+.clear-button {
+    width: 100% !important;
+    background-color: #d73f40 !important;
+    color: white !important;
+}
+
+.delete-button {
+    background-color: #6e48d5 !important;
+    color: white !important;
+}
+
+.equal-button {
+    background-color: #007bff !important;
+    color: white !important;
+}
+
+.operator-button {
+    background-color: #ff9f0a !important;
+    color: white !important;
 }
